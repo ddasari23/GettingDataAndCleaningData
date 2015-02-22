@@ -42,7 +42,7 @@ features - data in features.txt
 
 featuresList - Extracted names of columns from featuresList
 
-LogicalColumns -  A logical vector of featuresList to extract data from X
+keepColumns -  A logical vector of featuresList to extract data from X
 
 activities - data in activity_labels.txt
 
