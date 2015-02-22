@@ -1,3 +1,4 @@
+
 ##Getting data and cleaning data - Project 1 
 ## Deepika Dasari 
 ## Change to Aprropriate folder 
@@ -11,13 +12,6 @@ trainSub <- read.table("train/subject_train.txt")
 testLabel <- read.table("test/y_test.txt")
 trainLabel <- read.table("train/y_train.txt")
 
-## Garbage collection
-rm(testX)
-rm(trainX)
-rm(testSub)
-rm(trainSub)
-rm(testLabel)
-rm(trainLabel)
 
 ## Combine Data sets 
 X <- rbind(testX, trainX)
@@ -25,14 +19,13 @@ S <- rbind(testSub, trainSub)
 Y <- rbind(testLabel, trainLabel)
 
 
-
 ## Step 2: Logical Vector to keep only std and mean columns
 ## Step 3 : Assign column names for data using feature text 
 features <- read.table("features.txt", stringsAsFactors=FALSE)
 featuresList <- features$V2
-LogicalColumns <- grepl("(std|mean[^F])", featuresList, perl=TRUE)
-X <- X[, LogicalColumns]
-names(X) <- features[LogicalColumns]
+keepColumns <- grepl("(std|mean[^F])", featuresList, perl=TRUE)
+X <- X[, keepColumns]
+names(X) <- featuresList[keepColumns]
 names(X) <- gsub("\\(|\\)", "", names(X))
 names(X) <- tolower(names(X))
 
@@ -49,17 +42,17 @@ write.table(Data1, "Data1.txt")
 
 ## Step 5: Second independent tidy data set with the average of each variable for each activity and each subject.
 Su = unique(S)[,1]
-Sn = length(uS)
+Sn = length(Su)
 An = length(activities[,1])
-Cn = length(names(tidyData))
-ds2 = tidyData[ 1:(nS*nA), ]
+Cn = length(names(Data1))
+ds2 = Data1[ 1:(Sn*An), ]
 
 row = 1
 for (s in 1:Sn) {
   for (a in 1:An) {
-    td[row,1] = Su[s]
-    td[row,2] = activities[a, 2]
-    tmp <- tidyData[tidyData$subject==s & tidyData$activity==activities[a,2],]
+    ds2[row,1] = Su[s]
+    ds2[row,2] = activities[a, 2]
+    tmp <- Data1[Data1$subject==s & Data1$activity==activities[a,2],]
     ds2[row, 3:Cn] <- colMeans(tmp[, 3:Cn])
     row = row + 1
   }
