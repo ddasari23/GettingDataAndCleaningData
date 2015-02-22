@@ -20,7 +20,7 @@ rm(testLabel)
 rm(trainLabel)
 
 ## Combine Data sets 
-X <- rbind(testData, trainData)
+X <- rbind(testX, trainX)
 S <- rbind(testSub, trainSub)
 Y <- rbind(testLabel, trainLabel)
 
